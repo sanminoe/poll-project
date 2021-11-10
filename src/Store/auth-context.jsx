@@ -6,7 +6,11 @@ const AuthContext = React.createContext({
 	token: '',
 	isLoggedIn: false,
 	login: (token) => {},
-	logout: () => {}
+	logout: () => {},
+	user: null,
+	setUser: (id, username) => {},
+	votes: [],
+	setVotes: () => {}
 });
 
 const calculateRemainingTime = (expirationTime) => {
@@ -21,18 +25,26 @@ const calculateRemainingTime = (expirationTime) => {
 const retrieveStoredToken = () => {
 	const storedToken = localStorage.getItem('token');
 	const storedExpirationDate = localStorage.getItem('expirationTime');
-
+	const storedUserId = localStorage.getItem('userId');
+	const storedUserName = localStorage.getItem('username');
+	const storedKey = localStorage.getItem('key');
 	const remainingTime = calculateRemainingTime(storedExpirationDate);
 
 	if (remainingTime <= 3600) {
+		localStorage.removeItem('userId');
 		localStorage.removeItem('token');
+		localStorage.removeItem('username');
+		localStorage.removeItem('key');
 		localStorage.removeItem('expirationTime');
 		return null;
 	}
 
 	return {
 		token: storedToken,
-		duration: remainingTime
+		duration: remainingTime,
+		userId: storedUserId,
+		username: storedUserName,
+		key: storedKey
 	};
 };
 
@@ -40,17 +52,40 @@ export const AuthContextProvider = (props) => {
 	const tokenData = retrieveStoredToken();
 
 	let initialToken;
+	let initialUser;
 	if (tokenData) {
 		initialToken = tokenData.token;
 	}
+	if (initialToken) {
+		initialUser = { id: tokenData.userId, username: tokenData.username, key: tokenData.key };
+	}
 	const [ token, setToken ] = useState(initialToken);
+	const [ user, setUser ] = useState(initialUser);
 
+	const [ votes, setVotes ] = useState([]);
+
+	const setUserVotesHandler = async () => {
+		if (user) {
+			let res = await fetch(
+				`https://voting-app-4e43b-default-rtdb.europe-west1.firebasedatabase.app/users/${user.key}.json?`
+			);
+
+			let data = await res.json();
+			if (data !== null) {
+				setVotes(data.votes ? data.votes : []);
+			}
+		}
+	};
 	const userIsLoggedIn = !!token;
 
 	const logoutHandler = useCallback(() => {
 		setToken(null);
+		setUser({});
 		localStorage.removeItem('token');
 		localStorage.removeItem('expirationTime');
+		localStorage.removeItem('userId');
+		localStorage.removeItem('key');
+		localStorage.removeItem('username');
 
 		if (logoutTimer) {
 			clearTimeout(logoutTimer);
@@ -67,10 +102,16 @@ export const AuthContextProvider = (props) => {
 		logoutTimer = setTimeout(logoutHandler, remainingTime);
 	};
 
+	const setUserHandler = (userId, username, key) => {
+		localStorage.setItem('username', username);
+		localStorage.setItem('userId', userId);
+		localStorage.setItem('key', key);
+		setUser({ id: userId, username: username, key: key });
+	};
+
 	useEffect(
 		() => {
 			if (tokenData) {
-				console.log(tokenData.duration);
 				logoutTimer = setTimeout(logoutHandler, tokenData.duration);
 			}
 		},
@@ -81,7 +122,11 @@ export const AuthContextProvider = (props) => {
 		token: token,
 		isLoggedIn: userIsLoggedIn,
 		login: loginHandler,
-		logout: logoutHandler
+		logout: logoutHandler,
+		user: user,
+		setUser: setUserHandler,
+		votes: votes,
+		setVotes: setUserVotesHandler
 	};
 
 	return <AuthContext.Provider value={contextValue}>{props.children}</AuthContext.Provider>;

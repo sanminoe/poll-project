@@ -1,9 +1,16 @@
 const PollBar = (props) => {
-	let percentage = (props.votes / props.totalVotes * 100).toFixed(2);
+	let percentage = 0;
+	if (props.votes > 0 && props.totalVotes > 0) {
+		percentage = (props.votes / props.totalVotes * 100).toFixed(2);
+	}
 
 	return (
 		<div className="flex items-center w-10/12" onClick={props.onVoteSelection}>
-			<div className="w-full mt-5 h-10 flex items-center border border-gray-600 relative">
+			<div
+				className={`w-full mt-5 h-10 flex items-center ${!props.completed
+					? 'border border-gray-600'
+					: 'border'} relative`}
+			>
 				{!props.completed ? (
 					<div className="ml-2">
 						<div
@@ -24,7 +31,7 @@ const PollBar = (props) => {
 				</div>
 				<div
 					style={props.completed ? { width: +percentage + '%' } : null}
-					className={`${props.completed ? 'bg-red-500' : 'bg-white'} z-20 h-full absolute`}
+					className={`${props.completed ? 'bg-green-500' : 'bg-white'} z-20 h-full absolute`}
 				/>
 			</div>
 		</div>

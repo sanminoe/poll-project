@@ -7,11 +7,6 @@ const Header = (props) => {
 
 	const isLoggedIn = authCtx.isLoggedIn;
 
-	const logoutHandler = () => {
-		authCtx.logout();
-		navigate('/');
-	};
-
 	return (
 		<div className="h-16 flex justify-between items-center border-b">
 			<div className="flex justify-center w-full md:w-auto md:ml-4">
@@ -34,7 +29,7 @@ const Header = (props) => {
 					)}
 				</ul>
 				{isLoggedIn ? (
-					<button className="mr-3 border-2 border-black pl-6 pr-6" onClick={logoutHandler}>
+					<button className="mr-3 border-2 border-black pl-6 pr-6" onClick={props.onLogOut}>
 						Log out
 					</button>
 				) : (

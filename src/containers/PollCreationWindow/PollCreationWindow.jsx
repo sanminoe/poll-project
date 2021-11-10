@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
+import Modal from '../../components/Modal/Modal';
 const textInputStyle = 'border border-black pl-1';
 const PollCreationWindow = (props) => {
 	const [ formData, setFormData ] = useState({
@@ -21,7 +22,6 @@ const PollCreationWindow = (props) => {
 			});
 
 			data.pollOptions = options;
-			console.log(options);
 		}
 
 		setFormData(data);
@@ -29,13 +29,12 @@ const PollCreationWindow = (props) => {
 	let optionsNumberHandler = (e) => {
 		let data = { ...formData };
 
-		data.pollOptions = [ ...Array(+e.target.value).keys() ].map(() => ({
+		data.pollOptions = [ ...Array(e).keys() ].map(() => ({
 			id: uuid(),
 			value: '',
 			votes: 0
 		}));
 		setFormData(data);
-		setOptionsNumber(+e.target.value);
 	};
 	let optionsInputs = formData.pollOptions.map((v, i) => (
 		<article key={v.id} className="flex flex-col">
@@ -56,12 +55,12 @@ const PollCreationWindow = (props) => {
 	};
 	useEffect(
 		() => {
-			console.log(formData);
+			optionsNumberHandler(optionsNumber);
 		},
-		[ formData ]
+		[ optionsNumber ]
 	);
 	return (
-		<section className="z-50 bg-white absolute top-2/4 left-2/4 transform -translate-y-2/4 -translate-x-2/4">
+		<Modal onClose={props.onClose} modalTitle={'New Poll'}>
 			<div className="mt-5 mx-6 mb-5">
 				<form className="flex flex-col">
 					<article className="flex flex-col mb-5">
@@ -81,7 +80,7 @@ const PollCreationWindow = (props) => {
 							value={optionsNumber}
 							name="optionsNumber"
 							id="optionnumber"
-							onChange={optionsNumberHandler}
+							onChange={(e) => setOptionsNumber(+e.target.value)}
 							className="mt-2 border border-black bg-white outline-none"
 						>
 							<option value="2">2</option>
@@ -109,7 +108,7 @@ const PollCreationWindow = (props) => {
 					</button>
 				</div>
 			</div>
-		</section>
+		</Modal>
 	);
 };
 

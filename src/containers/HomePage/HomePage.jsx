@@ -1,7 +1,10 @@
+import { useNavigate } from 'react-router';
 import Card from '../../components/Card/Card';
 import { BsShare } from 'react-icons/bs';
 import { MdOutlineWhereToVote, MdOutlineCreate } from 'react-icons/md';
+
 const HomePage = (props) => {
+	const navigate = useNavigate();
 	return (
 		<main>
 			<div className="relative flex flex-col bg-yellow-400">
@@ -11,7 +14,12 @@ const HomePage = (props) => {
 						<p className="text-xl mt-2">Create, Vote and Share!</p>
 					</div>
 					<article className="mt-6  flex justify-center w-full ">
-						<button className="bg-green-500 px-9 py-3 my-4 mb-6 text-white">Start Here!</button>
+						<button
+							className="bg-green-500 px-9 py-3 my-4 mb-6 text-white"
+							onClick={() => navigate('/explore')}
+						>
+							Start Here!
+						</button>
 					</article>
 				</div>
 				<div className="hidden md:flex flex-col w-48 h-24 absolute top-3/4 md:top-2/3 self-end  items-end z-20">
