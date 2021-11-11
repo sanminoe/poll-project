@@ -30,10 +30,10 @@ const Auth = (props) => {
 		e.preventDefault();
 		if (isLoginMode) {
 			url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env
-				.REACT_APP_F_KEY}`;
+				.REACT_APP_API}`;
 		}
 		else {
-			url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_F_KEY}`;
+			url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_API}`;
 		}
 
 		fetch(url, {
