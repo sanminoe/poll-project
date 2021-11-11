@@ -29,10 +29,11 @@ const Auth = (props) => {
 		let url;
 		e.preventDefault();
 		if (isLoginMode) {
-			url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.API}`;
+			url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env
+				.REACT_APP_API_KEY}`;
 		}
 		else {
-			url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.API}`;
+			url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_API_KEY}`;
 		}
 
 		fetch(url, {
