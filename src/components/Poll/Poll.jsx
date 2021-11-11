@@ -1,16 +1,13 @@
 import React, { useState, useContext } from 'react';
 import AuthContext from '../../Store/auth-context';
-
 import PollBar from '../PollBar/PollBar';
 
 const Poll = (props) => {
 	let authCtx = useContext(AuthContext);
 	let [ optionsData, setOptionData ] = useState([ ...props.options ]);
 	let [ selectedData, setSelectedData ] = useState({ optionId: '', pollId: props.id });
-	let canVote;
-	if (!!authCtx.votes) {
-		canVote = authCtx.votes.find((e) => e.pollId === props.id);
-	}
+	let [ canSeeResult, setCanSeeResult ] = useState(false);
+
 	let selectOptionHandler = (optionId) => {
 		let opt = [ ...optionsData ];
 		let selected = opt.map((o) => {
@@ -62,7 +59,7 @@ const Poll = (props) => {
 			);
 
 			setSelectedData({});
-			props.closeModal();
+			setCanSeeResult(true);
 			props.onVote();
 		}
 	};
@@ -72,7 +69,7 @@ const Poll = (props) => {
 			optionName={opt.value}
 			votes={opt.votes}
 			totalVotes={props.votes}
-			completed={canVote}
+			completed={canSeeResult}
 			onVoteSelection={() => selectOptionHandler(opt.id)}
 			selected={opt.selected}
 		/>
@@ -96,9 +93,8 @@ const Poll = (props) => {
 				<div className="ml-4">
 					<p>Created: {props.created}</p>
 				</div>
-				{!props.completed && (
+				{!canSeeResult && (
 					<div className="w-auto md:mr-4 flex flex-col">
-						{!authCtx.isLoggedIn && <span>You must be logged in to vote</span>}
 						<button
 							disabled={!authCtx.isLoggedIn}
 							className={`w-32 py-4 md:px-12 md:py-2 text-white ${authCtx.isLoggedIn

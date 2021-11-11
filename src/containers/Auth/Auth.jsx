@@ -86,23 +86,24 @@ const Auth = (props) => {
 				<form onSubmit={authSubmitHandler}>
 					{!isLoginMode && (
 						<div className="flex flex-col">
-							<label>Username</label>
+							<label htmlFor="username">Username</label>
 							<input
+								name="username"
 								value={username}
 								type="text"
 								onChange={(e) => setUsername(e.target.value)}
-								className="border border-black"
+								className="p-1 border border-black"
 							/>
 						</div>
 					)}
 
-					<div className="flex flex-col">
-						<label>Email</label>
-						<input ref={emailRef} type="text" className="border border-black" />
+					<div className="flex flex-col my-2">
+						<label htmlFor="email">Email</label>
+						<input name="email" ref={emailRef} type="text" className="p-1 border border-black" />
 					</div>
 					<div className="flex flex-col">
-						<label>Password</label>
-						<input type="password" ref={passwordRef} className="border border-black" />
+						<label htmlFor="password">Password</label>
+						<input name="password" type="password" ref={passwordRef} className="p-1 border border-black" />
 					</div>
 					<div className="w-full justify-self-end mt-4">
 						<button className="self-end justify-self-end border px-6 border-black" type="submit">

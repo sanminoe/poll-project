@@ -10,7 +10,7 @@ const ExplorePage = (props) => {
 	let [ pollsData, setPollsData ] = useState([]);
 	const [ isOpen, setIsOpen ] = useBackdrop();
 	const authCtx = useContext(AuthContext);
-	let [ selectedPoll, setSelectedPoll ] = useState({});
+	let [ selectedPoll, setSelectedPoll ] = useState();
 
 	let getAllPolls = async () => {
 		let res = await fetch(`https://voting-app-4e43b-default-rtdb.europe-west1.firebasedatabase.app/polls.json`);
@@ -30,6 +30,14 @@ const ExplorePage = (props) => {
 		getAllPolls();
 		authCtx.setVotes();
 	}, []);
+	useEffect(
+		() => {
+			if (selectedPoll) {
+				selectPollHandler(selectedPoll.id);
+			}
+		},
+		[ pollsData ]
+	);
 
 	let selectPollHandler = (id) => {
 		setIsOpen(true);
@@ -59,7 +67,7 @@ const ExplorePage = (props) => {
 	};
 	return (
 		<div className="flex flex-col items-center">
-			<div className="mt-2 w-4/5 md:w-3/4 border-b bg-yellow-400">
+			<div className="mt-2 w-4/5 md:w-3/4 border-b border-gray-400">
 				<div className="ml-2 m-4">
 					<h2 className="text-3xl">Explore</h2>
 				</div>

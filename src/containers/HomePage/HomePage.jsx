@@ -28,8 +28,7 @@ const HomePage = (props) => {
 					<div className="bg-blue-600 w-full h-12 rounded-l" />
 				</div>
 			</div>
-			<section id="features" className="flex flex-col items-center mt-4 z-40">
-				<h4 className="text-4xl">Features</h4>
+			<section id="features" className="flex flex-col items-center mt-10 z-40">
 				<article className="flex flex-col md:flex-row justify-center">
 					<Card
 						titleFeature="Create"

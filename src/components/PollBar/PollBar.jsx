@@ -6,17 +6,11 @@ const PollBar = (props) => {
 
 	return (
 		<div className="flex items-center w-10/12" onClick={props.onVoteSelection}>
-			<div
-				className={`w-full mt-5 h-10 flex items-center ${!props.completed
-					? 'border border-gray-600'
-					: 'border'} relative`}
-			>
+			<div className={`w-full mt-5 h-10 flex items-center border border-gray-600 relative`}>
 				{!props.completed ? (
 					<div className="ml-2">
 						<div
-							className={`w-6 h-6 rounded-full border ${props.selected
-								? 'bg-blue-600'
-								: 'border-gray-600'}`}
+							className={`w-6 h-6 rounded-full border border-gray-800 ${props.selected && 'bg-blue-600'}`}
 							id="voteSelection"
 						/>
 					</div>

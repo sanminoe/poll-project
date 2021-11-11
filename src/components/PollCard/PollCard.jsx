@@ -18,15 +18,15 @@ const PollCard = (props) => {
 		/>
 	));
 	return (
-		<div className="w-full md:w-10/12 mt-3 mb-3 border shadow-md flex flex-col items-center">
+		<div className="w-full md:w-10/12 mt-3 mb-3 border-b border-gray-900  flex flex-col items-center">
 			<div className="w-full">
-				<div className="w-full mt-2 border-b flex flex-col md:flex-row md:justify-between items-center">
+				<div className="w-full bg-yellow-400 mt-2 border-b flex flex-col md:flex-row md:justify-between items-center">
 					<div className="flex items-center">
-						<div className="flex justify-center items-center text-3xl ">
+						<div className="flex justify-center items-center text-2xl ">
 							<p className="ml-6">{props.pollTitle}</p>
 						</div>
 					</div>
-					<div className="mr-6">
+					<div className="md:mr-6 flex flex-col items-center">
 						<p>Created by {props.owner}</p>
 						<p>
 							{props.votes}
